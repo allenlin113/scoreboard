@@ -236,8 +236,10 @@ function populateTable(game, score, year) {
 	cell1.innerHTML = parseDate(game).concat(yearFormat).concat("<br>").concat(parseTime(game));
 	cell2.innerHTML = parseMatch(game);
 
+	
+	/*Changes how WL is displayed. If W, L or T, font is 125% the size of the score. 
+	  If W, then letter is Green. If L then letter is Red. T is black.*/
 	var WLStyle; 
-
 
 	if (parseWL(game)=='W') {
 		WLStyle = "<span style='color:green; font-size: 125%'>" + parseWL(game) + "</span>";
@@ -249,15 +251,14 @@ function populateTable(game, score, year) {
 		WLStyle = "<span style='font-size: 125%'>" + parseWL(game) + "</span>";
 	}
 
-	//Checks if the game was played. If played (W, L, T) then post score. Otherwise, posts -
+
+	//Checks if the game was played. If played (W, L, T) then post score. Otherwise, posts '-'
 	if (parseWL(game) != '-') {
 		cell3.innerHTML = WLStyle.concat(', ').concat(parseScore(score));
 	}
 	else {
 		cell3.innerHTML = parseWL(game);
 	}
-
-
 }
 
 function clearTable(){

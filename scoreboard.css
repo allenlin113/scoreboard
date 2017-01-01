@@ -1,7 +1,11 @@
+::-webkit-scrollbar { 
+    display: none; 
+}
+
 #table_wrapper {
 	border: 2px solid #005a9c;
 	float: left;
-	width: 320px;
+	width: 305px;
 }
 
 #tbody {
@@ -15,7 +19,6 @@ table{
 	table-layout: fixed;
 	width:100%;
 	font-size: 12px;
-
 }
 
 #header{
@@ -23,6 +26,7 @@ table{
 	line-height: 44px;
 	text-align: center;
 	vertical-align: middle;
+	width: 100%;
 }
 
 #header #left {
@@ -42,11 +46,9 @@ select {
 	border-color: #005a9c;
 }
 
-
 tr:nth-child(even) {
     background-color: #ccd9ff;
 }
-
 
 td {
 	padding-top: 15px;
@@ -60,16 +62,18 @@ td {
 .date {
 	text-align: center;
 }
+
 .game {
 	text-align: center;
 }
+
 .score {
 	text-indent: -10px;
 	text-align: center;
 }
 
-/*
-.score::first-letter { 
-    font-size: 120%;
+@media (max-width: 960px) {
+	#table_wrapper {
+		width: 100%;
+	}
 }
-*/

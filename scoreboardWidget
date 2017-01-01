@@ -1,9 +1,13 @@
 <style>
 
+::-webkit-scrollbar { 
+    display: none; 
+}
+
 #table_wrapper {
 	border: 2px solid #005a9c;
 	float: left;
-	width: 305;
+	width: 305px;
 }
 
 #tbody {
@@ -17,7 +21,6 @@ table{
 	table-layout: fixed;
 	width:100%;
 	font-size: 12px;
-
 }
 
 #header{
@@ -33,7 +36,6 @@ table{
 	float: left;
 }
 
-
 body{
 	font-family: 'Droid Sans',sans-serif;
 }
@@ -45,27 +47,23 @@ select {
 	border-color: #005a9c;
 }
 
-
 tr:nth-child(even) {
     background-color: #ccd9ff;
 }
-
 
 td {
 	padding-top: 15px;
 	padding-bottom: 15px;
 }
 
-#scoreboard_heading{
-	color:  #005a9c;
-}
-
 .date {
 	text-align: center;
 }
+
 .game {
 	text-align: center;
 }
+
 .score {
 	text-indent: -10px;
 	text-align: center;
@@ -76,11 +74,12 @@ td {
 		width: 100%;
 	}
 }
-</style>
 
+</style>
 <!DOCTYPE HTML>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="scoreboard.css">
 	<script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
 </head>	
 <body>
@@ -97,7 +96,7 @@ td {
 	        	<form id="right">
 	            <select id="sport">
 					<option value="Baseball">Baseball</option>
-					<option value="Basketball">Basketball</option>
+					<option value="Basketball" selected>Basketball</option>
 					<option value="Football">Football</option>
 					<option value="Lacrosse">Lacrosse</option>
 					<option value="Soccer">Soccer</option>
@@ -112,111 +111,109 @@ td {
 			</table>
 		</div>
 </div>
-
+</body>
 
 <script>
+readRSS();
 
-	readRSS();
+//changeOptions() changes the sport dropdown menu depending on gender selected
+function changeOptions() {
+	var gender = document.getElementById("gender").value;
+	var sport = document.getElementById("sport");
 
-	//changeOptions() changes the sport dropdown menu depending on gender selected
-	function changeOptions() {
-		var gender = document.getElementById("gender").value;
-		var sport = document.getElementById("sport");
-
-		var men_sport = ['Baseball', 'Basketball', 'Football', 'Lacrosse', 'Soccer'];
-		var women_sport = ['Basketball', 'Lacrosse', 'Soccer', 'Softball', 'Volleyball'];
+	var men_sport = ['Baseball', 'Basketball', 'Football', 'Lacrosse', 'Soccer'];
+	var women_sport = ['Basketball', 'Lacrosse', 'Soccer', 'Softball', 'Volleyball'];
 
 
-		if(gender=="Women"){
-			for(i=0;i<women_sport.length;i++){
-				sport.options[i] = new Option(women_sport[i]);
-			}
-		}
-
-		if(gender == "Men"){
-			for(i=0;i<men_sport.length;i++){
-				sport.options[i] = new Option(men_sport[i]);
-			}			
+	if(gender=="Women"){
+		for(i=0;i<women_sport.length;i++){
+			sport.options[i] = new Option(women_sport[i]);
 		}
 	}
 
-	//This function takes reads gender and sport from the dropdown menu and returns an ID number that is correlated to an RSS feed
-	function returnSportID() {
-		var gender = document.getElementById("gender").value;
-		var sport = document.getElementById("sport").value;
+	if(gender == "Men"){
+		for(i=0;i<men_sport.length;i++){
+			sport.options[i] = new Option(men_sport[i]);
+		}			
+	}
+}
 
-		if (gender=="Women"){
-			switch (sport) {
-				case 'Basketball':
-					return '12';
-					break;
-				case 'Lacrosse':
-					return '13';
-					break;
-				case 'Soccer':
-					return '14';
-					break;
-				case 'Softball':
-					return '10';
-					break;
-				case 'Volleyball':
-					return '17';
-					break;
-			}
-		}
+//This function takes reads gender and sport from the dropdown menu and returns an ID number that is correlated to an RSS feed
+function returnSportID() {
+	var gender = document.getElementById("gender").value;
+	var sport = document.getElementById("sport").value;
 
-		if (gender=="Men"){
-			switch (sport) {
-				case 'Baseball':
-					return '1';
-					break;
-				case 'Basketball':
-					return '5';
-					break;
-				case 'Football':
-					return '3';
-					break;
-				case 'Lacrosse':
-					return '6';
-					break;
-				case 'Soccer':
-					return '7';
-					break;
-			}
+	if (gender=="Women"){
+		switch (sport) {
+			case 'Basketball':
+			return '12';
+			break;
+			case 'Lacrosse':
+			return '13';
+			break;
+			case 'Soccer':
+			return '14';
+			break;
+			case 'Softball':
+			return '10';
+			break;
+			case 'Volleyball':
+			return '17';
+			break;
 		}
 	}
 
+	if (gender=="Men"){
+		switch (sport) {
+			case 'Baseball':
+			return '1';
+			break;
+			case 'Basketball':
+			return '5';
+			break;
+			case 'Football':
+			return '3';
+			break;
+			case 'Lacrosse':
+			return '6';
+			break;
+			case 'Soccer':
+			return '7';
+			break;
+		}
+	}
+}
 
-	function readRSS() {
+function readRSS() {
 
-		//Clears table to allow it to be repopulated
-		clearTable();
+	//Clears table to allow it to be repopulated
+	clearTable();
 
 
-		//Use Yahoo Query Language (YQL) to read RSS feed from Stony Brook Athletics.
-		YUI().use('yql', function(Y){
-			var sportID = returnSportID();
+	//Use Yahoo Query Language (YQL) to read RSS feed from Stony Brook Athletics.
+	YUI().use('yql', function(Y){
+		var sportID = returnSportID();
 
-			/*Different sports have different RSS feed. We use the returnSportID() function to return the ID number of the selected
-			and concat to our query request*/
-			var query = 'select title, description, localstartdate from rss where url = "http://stonybrookathletics.com/calendar.ashx/calendar.rss?sport_id='
-			query = query.concat(sportID);
-			query = query.concat('\"');
-			
-			var q = Y.YQL(query, function(r){
-				var index=0;
-				while (r.query.results.item[index] != null) {
-					var game = r.query.results.item[index].title
-					var score = r.query.results.item[index].description
-					var year = r.query.results.item[index].localstartdate
-			
-					//Populate table
-					populateTable(game, score, year);
+		/*Different sports have different RSS feed. We use the returnSportID() function to return the ID number of the selected
+		and concat to our query request*/
+		var query = 'select title, description, localstartdate from rss where url = "http://stonybrookathletics.com/calendar.ashx/calendar.rss?sport_id='
+		query = query.concat(sportID);
+		query = query.concat('\"');
+		
+		var q = Y.YQL(query, function(r){
+			var index=0;
+			while (r.query.results.item[index] != null) {
+				var game = r.query.results.item[index].title
+				var score = r.query.results.item[index].description
+				var year = r.query.results.item[index].localstartdate
 
-					index++
-				}
-			})
+				//Populate table
+				populateTable(game, score, year);
+
+				index++
+			}
 		})
+	})
 }
 
 //Parse date from text. Date is before the first space. Find the index of the space, then parse data before it
@@ -281,6 +278,7 @@ function parseWL(text) {
 		WL = '-';
 	}
 	WL = WL.trim();
+
 	return WL;
 }
 
@@ -326,7 +324,6 @@ function parseYear(text){
 
 	var year = text.substring(2,4);
 	return year;
-
 }
 
 function populateTable(game, score, year) {
@@ -353,19 +350,32 @@ function populateTable(game, score, year) {
 	cell1.innerHTML = parseDate(game).concat(yearFormat).concat("<br>").concat(parseTime(game));
 	cell2.innerHTML = parseMatch(game);
 
-	//Checks if the game was played. If played (W, L, T) then post score. Otherwise, posts -
+	
+	/*Changes how WL is displayed. If W, L or T, font is 125% the size of the score. 
+	  If W, then letter is Green. If L then letter is Red. T is black.*/
+	var WLStyle; 
+
+	if (parseWL(game)=='W') {
+		WLStyle = "<span style='color:green; font-size: 125%'>" + parseWL(game) + "</span>";
+	}
+	else if (parseWL(game)=='L') {
+		WLStyle = "<span style='color:red; font-size: 125%'>" + parseWL(game) + "</span>";
+	}
+	else {
+		WLStyle = "<span style='font-size: 125%'>" + parseWL(game) + "</span>";
+	}
+
+
+	//Checks if the game was played. If played (W, L, T) then post score. Otherwise, posts '-'
 	if (parseWL(game) != '-') {
-		cell3.innerHTML = parseWL(game).concat(', ').concat(parseScore(score));
+		cell3.innerHTML = WLStyle.concat(', ').concat(parseScore(score));
 	}
 	else {
 		cell3.innerHTML = parseWL(game);
 	}
-	
-
 }
 
 function clearTable(){
-
 	var table = document.getElementById("gameTable");
 	var rowCount = table.rows.length;
 	
@@ -373,7 +383,6 @@ function clearTable(){
 		table.deleteRow(0);
 	}
 }
+
 </script>
-<br>
-</body>
 </html>
