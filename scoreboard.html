@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="scoreboard.css">
+	<script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+</head>	
+<body>
+<h2 id = "scoreboard_heading">SCOREBOARD</h2>
+<div id = "table_wrapper">
+
+		<div id="header" onchange="readRSS();">
+				<form id="left">
+				<select id="gender" onchange="changeOptions();">
+	                <option value="Men">Men</option>
+	                <option value="Women">Women</option>
+	            </select>
+	            </form>
+
+	        	<form id="right">
+	            <select id="sport">
+					<option value="Baseball">Baseball</option>
+					<option value="Basketball" selected>Basketball</option>
+					<option value="Football">Football</option>
+					<option value="Lacrosse">Lacrosse</option>
+					<option value="Soccer">Soccer</option>
+				</select>
+				</form>
+  		</div>
+		
+		<div id="tbody">			
+			<table id = "gameTable">
+
+	
+			</table>
+		</div>
+</div>
+
+<script src="scoreboard.js"></script>
+
+</body>
+</html>
