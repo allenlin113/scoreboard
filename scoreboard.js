@@ -163,6 +163,7 @@ function parseWL(text) {
 		WL = '-';
 	}
 	WL = WL.trim();
+
 	return WL;
 }
 
@@ -235,13 +236,28 @@ function populateTable(game, score, year) {
 	cell1.innerHTML = parseDate(game).concat(yearFormat).concat("<br>").concat(parseTime(game));
 	cell2.innerHTML = parseMatch(game);
 
+	var WLStyle; 
+
+
+	if (parseWL(game)=='W') {
+		WLStyle = "<span style='color:green; font-size: 125%'>" + parseWL(game) + "</span>";
+	}
+	else if (parseWL(game)=='L') {
+		WLStyle = "<span style='color:red; font-size: 125%'>" + parseWL(game) + "</span>";
+	}
+	else {
+		WLStyle = "<span style='font-size: 125%'>" + parseWL(game) + "</span>";
+	}
+
 	//Checks if the game was played. If played (W, L, T) then post score. Otherwise, posts -
 	if (parseWL(game) != '-') {
-		cell3.innerHTML = parseWL(game).concat(', ').concat(parseScore(score));
+		cell3.innerHTML = WLStyle.concat(', ').concat(parseScore(score));
 	}
 	else {
 		cell3.innerHTML = parseWL(game);
 	}
+
+
 }
 
 function clearTable(){

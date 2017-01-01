@@ -67,3 +67,9 @@ td {
 	text-indent: -10px;
 	text-align: center;
 }
+
+/*
+.score::first-letter { 
+    font-size: 120%;
+}
+*/
