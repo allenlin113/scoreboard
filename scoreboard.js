@@ -110,7 +110,7 @@ function parseDate(text) {
 
 	//Checks to make sure date is in correct format.
 	if (!date.includes('/')) {
-		date = "ERROR";
+		date = "TBD"; //Listed as ERROR before. Have not run into issue with date. TBD should be a softer response
 	}
 	return date;
 }
@@ -144,6 +144,12 @@ function parseMatch(text) {
 	}
 
 	opponent = opponent.trim();
+
+	//Removes ranking next to school name. Example "No. 5 UConn"
+	if (opponent.includes('No. ')) {
+		opponent = opponent.substring(6, opponent.sustring);
+		opponent = opponent.trim();
+	}
 
 	/*RSS feed includes an extra space between vs/at and opponent. 
 	For the sake of saving one pixel, we included this convulated method.*/
