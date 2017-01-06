@@ -80,3 +80,7 @@ td {
 		width: 100%;
 	}
 }
+
+hr {
+	visibility: hidden;
+}
