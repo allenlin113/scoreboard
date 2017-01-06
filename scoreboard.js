@@ -78,6 +78,7 @@ function readRSS() {
 
 		/*Different sports have different RSS feed. We use the returnSportID() function to return the ID number of the selected
 		and concat to our query request*/
+
 		var query = 'select title, description, localstartdate from rss where url = "http://stonybrookathletics.com/calendar.ashx/calendar.rss?sport_id='
 		query = query.concat(sportID);
 		query = query.concat('\"');
@@ -93,9 +94,10 @@ function readRSS() {
 				populateTable(game, score, year);
 				index++;
 			}
-		},
+		}, {
+        another: 'option'
+    	},
 		{
-			base: '://query.yahooapis.com/v1/yql?', //Different base URL for private data
         	proto: 'https' //Connect using SSL
 		});
 		q.send();
