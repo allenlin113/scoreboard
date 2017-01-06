@@ -79,7 +79,7 @@ td {
 <!DOCTYPE HTML>
 <html>
 <head>
-	<script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+	<script type="text/javascript" src="https://yui-s.yahooapis.com/combo?3.18.1/build/yui/yui-min.js"></script>
 </head>	
 <body>
 <div id = "table_wrapper">
@@ -111,7 +111,7 @@ td {
 		</div>
 </div>
 
-<br>
+<hr>
 </body>
 
 <script>
@@ -190,7 +190,6 @@ function readRSS() {
 	//Clears table to allow it to be repopulated
 	clearTable();
 
-
 	//Use Yahoo Query Language (YQL) to read RSS feed from Stony Brook Athletics.
 	YUI().use('yql', function(Y){
 		var sportID = returnSportID();
@@ -201,7 +200,7 @@ function readRSS() {
 		query = query.concat(sportID);
 		query = query.concat('\"');
 		
-		var q = Y.YQL(query, function(r){
+		var q = new Y.YQLRequest(query, function(r){
 			var index=0;
 			while (r.query.results.item[index] != null) {
 				var game = r.query.results.item[index].title
@@ -211,9 +210,15 @@ function readRSS() {
 				//Populate table
 				populateTable(game, score, year);
 
-				index++
-			}
-		})
+				index++;
+			} 
+		},
+		{
+			base: '://query.yahooapis.com/v1/yql?', //Different base URL for private data
+        	proto: 'https' //Connect using SSL
+			});
+
+		q.send();
 	})
 }
 

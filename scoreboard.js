@@ -82,7 +82,7 @@ function readRSS() {
 		query = query.concat(sportID);
 		query = query.concat('\"');
 		
-		var q = Y.YQL(query, function(r){
+		var q = new Y.YQLRequest(query, function(r){
 			var index=0;
 			while (r.query.results.item[index] != null) {
 				var game = r.query.results.item[index].title
@@ -91,11 +91,15 @@ function readRSS() {
 
 				//Populate table
 				populateTable(game, score, year);
-
-				index++
+				index++;
 			}
-		})
-	})
+		},
+		{
+			base: '://query.yahooapis.com/v1/yql?', //Different base URL for private data
+        	proto: 'https' //Connect using SSL
+		});
+		q.send();
+	});
 }
 
 //Parse date from text. Date is before the first space. Find the index of the space, then parse data before it
