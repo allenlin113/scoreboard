@@ -205,6 +205,12 @@ function parseScore(text) {
 		}
 
 		score = score.trim();
+
+		//Solely used to fix Women's Basketball Game vs Cornell
+		if (score.includes("(2")) {
+			score = score.substring(0, score.indexOf("(2"));
+		}
+
 	}
 	else {
 		score = "";
