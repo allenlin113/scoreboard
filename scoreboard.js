@@ -184,11 +184,12 @@ function parseScore(text) {
 
 	var score;
 	var played = parseWL(text);
+	var first = text.indexOf("\\n");
+	var second = text.indexOf("\\n", first + 1);
+	score = text.substring(first+3, second);
+
 	if ((played == 'W') || (played == 'L') || (played== 'T')) {
 
-		var first = text.indexOf("\\n");
-		var second = text.indexOf("\\n", first + 1);
-		score = text.substring(first+3, second);
 
 		//Some scores show (OT), specifically soccer. Remove to save space.
 		if ((score.includes("(OT)")) || (score.includes("2 OT"))) {
@@ -214,6 +215,10 @@ function parseScore(text) {
 	}
 	else {
 		score = "";
+	}
+
+	if (played == 'N') {
+		score = text.substring(first+6, second);
 	}
 
 	return score;
@@ -254,9 +259,12 @@ function populateTable(game, score, year) {
 	
 	/*Changes how WL is displayed. If W, L or T, font is 125% the size of the score. 
 	  If W, then letter is Green. If L then letter is Red. T is black.*/
-	var WLStyle; 
+	var WLStyle;
 
-	if (parseWL(game)=='W') {
+	if (parseWL(game)=='N') {
+		WLStyle = "<span style='font-size: 125%'></span>";
+	}
+	else if (parseWL(game)=='W') {
 		WLStyle = "<span style='color:green; font-size: 125%'>" + parseWL(game) + "</span>";
 	}
 	else if (parseWL(game)=='L') {
@@ -268,9 +276,14 @@ function populateTable(game, score, year) {
 
 
 	//Checks if the game was played. If played (W, L, T) then post score. Otherwise, posts '-'
-	if (parseWL(game) != '-') {
+	if ((parseWL(game) != '-') && (parseWL(game) != 'N')){
 		cell3.innerHTML = WLStyle.concat(', ').concat(parseScore(score));
 	}
+
+	else if (parseWL(game) == 'N') {
+		cell3.innerHTML = (parseScore(score));
+	}
+
 	else {
 		cell3.innerHTML = parseWL(game);
 	}
