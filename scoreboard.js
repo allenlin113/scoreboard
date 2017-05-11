@@ -221,6 +221,11 @@ function parseScore(text) {
 		score = text.substring(first+6, second);
 	}
 
+	if (score == '\\') {
+		score = "N/A";
+	}
+
+
 	return score;
 }
 
